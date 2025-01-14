@@ -41,6 +41,24 @@
       "name": "Fiddle Leaf Fig",
       "image": "./images/fiddle-leaf-fig.jpg",
       "price": 55
+    },
+    {
+      "name": "Lilac",
+      "image": "https://www.thespruce.com/lilac-bushes-growing-tips-2132722",
+      "price": "10.03",
+      "id": 8
+    },
+    {
+      "name": "Lilac",
+      "image": "https://www.thespruce.com/lilac-bushes-growing-tips-2132722",
+      "price": "10.03",
+      "id": 9
+    },
+    {
+      "name": "Lilac",
+      "image": "",
+      "price": "9999",
+      "id": 10
     }
   ]
 }
