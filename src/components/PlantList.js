@@ -1,18 +1,19 @@
 import React from "react";
+
 import PlantCard from "./PlantCard";
 
-function PlantList({plants}) {
-
-const plantData = plants.map( plant => 
-      <PlantCard
+function PlantList({ deletePlant, plants, updatePlant }) {
+  const plantCardComponents = plants.map(plant => (
+    <PlantCard
+        deletePlant={deletePlant}
         key={plant.id}
-        name={plant.name}
-        image={plant.image}
-        price={plant.price}
-      />)
+        updatePlant={updatePlant}
+        {...plant}
+    />
+  ))
 
   return (
-    <ul className="cards">{plantData}</ul>
+    <ul className="cards">{plantCardComponents}</ul>
   );
 }
 
