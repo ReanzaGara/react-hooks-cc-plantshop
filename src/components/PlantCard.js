@@ -1,47 +1,33 @@
 import React, { useState } from "react";
 
-function PlantCard({ deletePlant, id, image, name, price, updatePlant }) {
-  const [inStock, setInStock] = useState(true)
-  const [priceInput, setPriceInput] = useState(price)
+function PlantCard({ plant, id, onDeletePlant }) {
+  const { name, image, price } = plant;
 
-  const handleClick = () => setInStock(false)
-  const handleDelete = () => deletePlant(id)
+  const [isInStock, setIsInStock] = useState(true);
+  function handleInStock() {
+    setIsInStock((prevIsInStock) => !prevIsInStock);
+  }
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-
-    updatePlant(id, { price: parseFloat(priceInput) })
+  function handleDelete() {
+    fetch(`http://localhost:6001/plants/${id}`, {
+      method: "DELETE",
+    });
+    onDeletePlant(id);
   }
 
   return (
-    <li className="card">
+    <li className="card" data-testid="plant-item">
       <img src={image} alt={name} />
       <h4>{name}</h4>
-      <p>
-        Price:
-        <form onSubmit={handleSubmit}>
-          <input
-              name="price"
-              onChange={(event) => setPriceInput(event.target.value)}
-              type="text"
-              value={priceInput}
-          />
-          <button type="submit">Update Price</button>
-        </form>
-      </p>
-      <div className={"row"}>
-        {inStock ? (
-          <button
-              className="primary"
-              onClick={handleClick}
-          >
-            In Stock
-          </button>
-        ) : (
-          <button>Out of Stock</button>
-        )}
-        <button onClick={handleDelete}>x</button>
-      </div>
+      <p>Price: {price}</p>
+      {isInStock ? (
+        <button onClick={handleInStock} className="primary">
+          In Stock
+        </button>
+      ) : (
+        <button onClick={handleInStock}>Out of Stock</button>
+      )}
+      <button onClick={handleDelete}>Delete</button>
     </li>
   );
 }

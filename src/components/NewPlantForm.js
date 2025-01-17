@@ -1,31 +1,33 @@
 import React, { useState } from "react";
 
-const defaultData = {
-  name: "",
-  image: "",
-  price: "",
-}
+function NewPlantForm({ onAddPlant }) {
+  const [newPlantName, setNewPlantName] = useState("");
+  const [newPlantImage, setNewPlantImage] = useState("");
+  const [newPlantPrice, setNewPlantPrice] = useState("");
 
-function NewPlantForm({ createPlant }) {
-  const [formData, setFormData] = useState(defaultData)
+  function handleSubmit(e) {
+    e.preventDefault();
+    const plantObj = {
+      name: newPlantName,
+      image: newPlantImage,
+      price: newPlantPrice,
+    };
 
-  const handleChange = (event) => {
-    event.preventDefault()
-
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
+    fetch("http://localhost:6001/plants", {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/JSON",
+      },
+      body: JSON.stringify(plantObj),
     })
-  }
+      .then((r) => r.json())
+      .then((data) => {
+        onAddPlant(data);
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    createPlant({
-      name: formData.name,
-      image: formData.image,
-      price: parseFloat(formData.price)
-    })
-    setFormData(defaultData)
+        setNewPlantName("");
+        setNewPlantImage("");
+        setNewPlantPrice("");
+      });
   }
 
   return (
@@ -33,31 +35,30 @@ function NewPlantForm({ createPlant }) {
       <h2>New Plant</h2>
       <form onSubmit={handleSubmit}>
         <input
-            name="name"
-            onChange={handleChange}
-            placeholder="Plant name"
-            type="text"
-            value={formData.name}
+          type="text"
+          name="name"
+          placeholder="Plant name"
+          onChange={(e) => setNewPlantName(e.target.value)}
+          value={newPlantName}
         />
         <input
-            name="image"
-            onChange={handleChange}
-            placeholder="Image URL"
-            type="text"
-            value={formData.image}
+          type="text"
+          name="image"
+          placeholder="Image URL"
+          onChange={(e) => setNewPlantImage(e.target.value)}
+          value={newPlantImage}
         />
         <input
-            name="price"
-            onChange={handleChange}
-            placeholder="Price"
-            step="0.01"
-            type="number"
-            value={formData.price}
+          type="number"
+          name="price"
+          step="0.01"
+          placeholder="Price"
+          onChange={(e) => setNewPlantPrice(e.target.value)}
+          value={newPlantPrice}
         />
         <button type="submit">Add Plant</button>
       </form>
     </div>
   );
 }
-
 export default NewPlantForm;

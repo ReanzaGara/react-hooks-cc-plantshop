@@ -1,19 +1,26 @@
 import React from "react";
-
 import PlantCard from "./PlantCard";
 
-function PlantList({ deletePlant, plants, updatePlant }) {
-  const plantCardComponents = plants.map(plant => (
-    <PlantCard
-        deletePlant={deletePlant}
-        key={plant.id}
-        updatePlant={updatePlant}
-        {...plant}
-    />
-  ))
-
+function PlantList({ plants, onUpdatePlant, submittedSearch, onDeletePlant }) {
   return (
-    <ul className="cards">{plantCardComponents}</ul>
+    <ul className="cards">
+      {plants
+        .filter((plant) => {
+          return plant.name
+            .toLowerCase()
+            .includes(submittedSearch.toLowerCase());
+        })
+
+        .map((plant) => (
+          <PlantCard
+            key={plant.id}
+            plant={plant}
+            id={plant.id}
+            onUpdatePlant={onUpdatePlant}
+            onDeletePlant={onDeletePlant}
+          />
+        ))}
+    </ul>
   );
 }
 

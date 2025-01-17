@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 
-function Search({ search, setSearch }) {
-  const handleChange = (event) => setSearch(event.target.value)
+function Search({ setSubmittedSearch }) {
+  const [giveTerm, setSearchTerm] = useState("");
+
+  
+  function takeChange(e) {
+    const value = e.target.value;
+    setSearchTerm(value);          
+    setSubmittedSearch(value);     
+  }
 
   return (
     <div className="searchbar">
@@ -10,8 +17,8 @@ function Search({ search, setSearch }) {
         type="text"
         id="search"
         placeholder="Type a name to search..."
-        onChange={handleChange}
-        value={search}
+        value={giveTerm}  
+        onChange={takeChange}  
       />
     </div>
   );
